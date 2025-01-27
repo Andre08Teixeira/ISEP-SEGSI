@@ -1,0 +1,29 @@
+# Adicionar utilizadores
+sudo adduser isaac
+sudo adduser moses
+sudo adduser sara
+sudo adduser abraham
+
+# Criar grupos 
+sudo groupadd PU 
+sudo groupadd NPU
+
+# Associar utilizadores aos grupos
+sudo usermod -aG PU isaac
+sudo usermod -aG PU moses 
+sudo usermod -aG NPU sara 
+sudo usermod -aG NPU abraham
+
+
+No/etc/freeradius/3.0/users:
+
+# Grupo de utilizadores privilegiados (PU)
+DEFAULT Group == "PU"
+    Service-Type := Administrative-User,
+    Reply-Message := "Acesso privilegiado."
+
+# Grupo de utilizadores não privilegiados (NPU)
+DEFAULT Group == "NPU"
+    Service-Type := Framed-User,
+    User-Profile := Non-Admin,
+    Reply-Message := "Acesso restrito. Apenas pode realizar operações não administrativas."

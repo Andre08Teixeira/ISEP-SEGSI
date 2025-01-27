@@ -1,0 +1,63 @@
+Após instalar o kali na vm foi necessário fazer alguns updates
+
+-> sudo apt-get update
+->sudo apt-get install freeradius
+
+CRIAMOS OS USERS
+sudo adduser bob
+sudo adduser alice
+sudo adduser john
+sudo adduser madeleine
+sudo adduser jake
+
+
+CRIAMOS OS DIFERENTES GRUPOS
+sudo groupadd standard_users
+sudo groupadd accountant
+sudo groupadd admin
+
+ATRIBUÍMOS OS USERS AOS GRUPOS
+sudo usermod -aG standard_users bob
+sudo usermod -aG standard_users alice
+sudo usermod -aG accountant madeleine
+sudo usermod -aG admin jake
+
+groups user(bob,alice,...) se quisermos ver que os utilizadores foram adicionados corretamente aos grupos
+
+
+Depois no /etc/freeradius/3.0/users fizemos a seguinte configuração para controlar o acesso tendo em conta os grupos. Neste caso standard_users e admin deveriam ter acesso. Accountant e users sem grupo não devem.
+
+# Permitir acesso apenas para o grupo 'standard_users'
+DEFAULT Group == "standard_users"
+    Reply-Message := "Bem-vindo, utilizador padrão!"
+
+# Permitir acesso apenas para o grupo 'admin'
+DEFAULT Group == "admin"
+    Reply-Message := "Bem-vindo, Admin!"
+
+# Rejeitar todos os outros utilizadores
+DEFAULT Auth-Type := Reject
+    Reply-Message := "Acesso negado: grupo não autorizado"
+
+
+Depois é necessário ativar o módulo unix.  Normalmente, o módulo unix já existe. Por isso fiz sudo ls /etc/freeradius/3.0/mods-enabled/ e vi se tinha lá "unix". No entanto, caso não tenha para ativar devemos fazer o comando(pelo sim pelo não faz na mesma, deve aparecer um erro, que o "File exists":
+sudo ln -s /etc/freeradius/3.0/mods-available/unix /etc/freeradius/3.0/mods-enabled/
+
+
+Depois fazer sudo nano /etc/freeradius/3.0/sites-enabled/default e no authorize tem uma linha lá comentada a dizer unix, tirar o #
+
+Depois sudo nano /etc/freeradius/3.0/clients.conf e tirar o # do  require_message_authenticator = no
+
+Depois sudo systemctl restart freeradius
+
+E testamos com radtest bob bob123 127.0.0.1 0 testing123 por exemplo
+
+E é isto.
+
+Se quisermos confirmar se os utilizadores estão associados aos grupos corretos
+sudo nano /etc/group
+
+sudo nano /etc/passwd contém informações sobre as contas de utilizador
+
+/etc/shadow armazena as passwords em formato hash e as políticas de expiração de senhas.
+

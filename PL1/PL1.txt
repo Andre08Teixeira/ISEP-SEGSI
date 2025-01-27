@@ -1,0 +1,90 @@
+EX1 Point-to-Point Protocol(PPP):
+
+1. Que tipo de autenticação é utilizada no PPP protocol?
+
+O protocolo PPP (Point-to-Point Protocol) pode usar dois métodos de autenticação principais:
+
+-> PAP (Password Authentication Protocol): Envia a senha em texto claro, o que o torna vulnerável a ataques.
+
+-> CHAP (Challenge Handshake Authentication Protocol): Usa um desafio e resposta criptografados, onde o servidor envia um desafio ao cliente, que deve responder com um valor hash da senha.
+
+Neste caso é utilizada é o PAP.
+
+2. Quais são os passos para autenticar o utilizador?
+
+No CHAP os passos típicos são:
+
+1. O cliente solicita a autenticação.
+2. O servidor envia um desafio (normalmente um número ou uma sequência de caracteres).
+3. O cliente responde ao desafio
+4. O servidor verifica se o hash é correto. Se for, o cliente é autenticado.
+
+3. Identifique a password "secreta"
+A senha ou hash poderá ser extraída do Packet Capture, dependendo do método de autenticação utilizado (PAP ou CHAP), neste caso como é PAP a password é: aliceads1
+
+4. Imagine que você é um provedor de telecomunicações e fornece esse método de autenticação aos seus clientes, quais são suas considerações de segurança?
+
+Se estivermos a usar PAP, uma consideração imediata seria o risco de enviar palavras-passes em texto claro, o que torna o protocolo inseguro. A recomendação seria o uso de CHAP ou, idealmente, métodos de autenticação mais modernos como EAP (Extensible Authentication Protocol).
+
+EX2: Challenge Authentication
+
+1. Descreva o protocolo Radius (o que faz, para que serve e a sua finalidade).
+
+O  RADIUS (Remote Authentication Dial-In User Service) é um protocolo de rede usado para autenticação, autorização e contabilização de utilizadores que se conectam a uma rede. Centraliza o processo de autenticação e pode usar diferentes métodos, como PAP, CHAP ou EAP. Considerações de segurança incluem a necessidade de proteger a comunicação entre o cliente e o servidor (por exemplo, usando IPsec ou TLS) para evitar a exposição de credenciais.
+
+
+
+
+2. Descreva o Challange Authentication Principle.
+
+A autenticação por Challenge evita o envio da password em texto claro. O servidor envia um desafio ao cliente, e este responde com um hash da senha combinada com o desafio. O servidor verifica o valor do hash sem nunca expor a senha real.
+
+3. Quebre a credencial utilizando qualquer cracker de senha, como JohnTheRipper ou Hashcat.
+
+NÃO FOI FEITO AINDA
+
+4. Enquanto faz crack, comente a resiliência da cifra.
+NÃO FOI FEITO AINDA
+
+EX3: LightWeigtDirectory Access Protocol (LDAP)
+
+1. O que é LDAP Simple Bind? E Anonymous Bind?
+
+-> Simple Bind: O cliente envia o nome do utilizador e a senha em texto claro para autenticação.
+
+-> Anonymous Bind: Não requer credenciais, permitindo que o cliente aceda a certos recursos publicamente disponíveis no diretório. 
+
+2. Cite vários tipos de autenticação no LDAP.
+
+Além do Simple Bind e Anonymous Bind, existe também:
+
+-> SASL (Simple Authentication and Security Layer): Suporta métodos mais seguros, como Kerberos.
+
+-> DIGEST-MD5: Um método de autenticação que usa MD5 para proteger a senha.
+
+-> GSSAPI/Kerberos: Usado em ambientes corporativos, fornece forte autenticação.
+
+3. O que é LDAP Sign and Seal?
+
+É um recurso de segurança que assina e criptografa as comunicações LDAP para evitar a interceptação e modificação de dados durante a transmissão.
+
+4. Qual é a vantagem de usar LDAP com autenticação Kerberos?
+
+A autenticação Kerberos permite que os utilizadores façam login uma vez e acedam a múltiplos serviços sem a necessidade de reenviar as suas credenciais. Proporciona também criptografia e autenticação mútua, o que aumenta a segurança em relação ao Simple Bind.
+
+EX4: NTLM LDAP
+
+1. Quem é o utilizador a fazer login?
+NÃO FOI FEITO AINDA
+
+2. Explique as diferentes interações do protocolo.
+
+O NTLM é um protocolo de autenticação da Microsoft que envolve:
+
+O cliente envia o nome de utilizador ao servidor.
+O servidor gera e envia um desafio ao cliente.
+O cliente responde com um valor hash gerado a partir do desafio e da senha.
+O servidor valida o valor e concede ou nega o acesso.
+
+3. Extraia todos os dados pertinentes e quebre a senha.
+NÃO FOI FEITO AINDA, MAS UTILIZAR JohnTheRipper OU Hashcat
